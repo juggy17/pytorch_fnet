@@ -1,4 +1,8 @@
 import argparse
+import sys
+import os
+sys.path
+sys.path.insert(0, os.getcwd() + '/../')
 import pytorch_fnet.fnet as fnet
 import pytorch_fnet.fnet.data
 import pytorch_fnet.fnet.fnet_model
