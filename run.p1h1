@@ -1,0 +1,1 @@
+sbatch -e /scratch/jagadish/testjob.err -o /scratch/jagadish/testjob.out -p gpu --gres=gpu:p100:1 --mem=64g run.sh
