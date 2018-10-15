@@ -6,13 +6,14 @@ from skimage import io, transform
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader, Dataset
-from torchvision import transforms, utils
+from torchvision import utils
 import argparse
 import warnings
 warnings.filterwarnings("ignore")
 import scipy
 from .bufferedpatchdataset import BufferedPatchDataset
 from PIL import Image
+from .. import transforms
 
 def normalize(img):
     """Subtract mean, set STD to 1.0"""
