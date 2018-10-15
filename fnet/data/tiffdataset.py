@@ -42,9 +42,9 @@ class TIFdataset(Dataset):
                     transform_target = None):
                 
         if dataframe is not None:
-            self.df = dataframe
+            self.ds = dataframe
         else:
-            self.df = pd.read_csv(path_csv)
+            self.ds = pd.read_csv(path_csv)
             
         self.transform_source = transform_source
         self.transform_target = transform_target
