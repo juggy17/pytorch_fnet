@@ -36,9 +36,18 @@ class Resizer(object):
 
 # class for dataset
 class TIFdataset(Dataset):
-    def __init__(self, csvFile, transform=None):
-        self.ds = pd.read_csv(csvFile)        
-        self.transform = transform 
+    def __init__(self, dataframe: pd.DataFrame = None, path_csv: str = None, 
+                    transform_source = [transforms.normalize],
+                    transform_target = None):
+                
+        if dataframe is not None:
+            self.df = dataframe
+        else:
+            self.df = pd.read_csv(path_csv)
+            
+        self.transform_source = transform_source
+        self.transform_target = transform_target
+        
         assert all(i in self.ds.columns for i in ['path_tif_signal', 'path_tif_target']) 
     
     def __len__(self):
@@ -53,15 +62,19 @@ class TIFdataset(Dataset):
         signal = io.imread(signalFile)[:508, :397]
         target = io.imread(targetFile)[:508, :397]
                         
-        im_out = list()
+        im_out = list()        
         im_out.append(signal)
         im_out.append(target)
 
+        if self.transform_source is not None:
+            for t in self.transform_source: 
+                im_out[0] = t(im_out[0])
+
+        if has_target and self.transform_target is not None:
+            for t in self.transform_target: 
+                im_out[1] = t(im_out[1])
+
         print(signal.shape)
-        
-        if self.transform is not None:
-            for t in self.transform: 
-                im_out[0] = eval(t)(im_out[0])
 
         im_out = [torch.from_numpy(im.astype(float)).float() for im in im_out]
         
