@@ -15,3 +15,5 @@ tmp/
 *~
 *tif
 *czi
+.DS_Store
+*#
