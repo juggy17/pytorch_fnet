@@ -11,3 +11,7 @@ tmp/
 *.out
 *tf_records
 *tf_record
+*tfrecord
+*~
+*tif
+*czi
