@@ -50,7 +50,7 @@ def main():
     parser.add_argument('--bpds_kwargs', type=json.loads, default={}, help='kwargs to be passed to BufferedPatchDataset')
     parser.add_argument('--buffer_size', type=int, default=5, help='number of images to cache in memory')
     parser.add_argument('--buffer_switch_frequency', type=int, default=720, help='BufferedPatchDataset buffer switch frequency')
-    parser.add_argument('--class_dataset', default='CziDataset', help='Dataset class')
+    parser.add_argument('--class_dataset', default='TIFdataset', help='Dataset class')
     parser.add_argument('--gpu_ids', type=int, nargs='+', default=0, help='GPU ID')
     parser.add_argument('--interval_save', type=int, default=500, help='iterations between saving log/model')
     parser.add_argument('--iter_checkpoint', nargs='+', type=int, default=[], help='iterations at which to save checkpoints of model')

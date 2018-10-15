@@ -1,0 +1,3 @@
+path_tif_signal,path_tif_target
+data/layeredTiff/signal_xy40,data/layeredTiff/target_xy40
+data/layeredTiff/signal_xy20,data/layeredTiff/target_xy20

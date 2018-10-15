@@ -1,55 +1,70 @@
-import torch.utils.data
-from pytorch_fnet.fnet.data.fnetdataset import FnetDataset
-from pytorch_fnet.fnet.data.tifreader import TifReader
-
-from .. import transforms as transforms
-
+from __future__ import print_function, division
+import os
+import torch
 import pandas as pd
+from skimage import io, transform
+import numpy as np
+import matplotlib.pyplot as plt
+from torch.utils.data import DataLoader, Dataset
+from torchvision import transforms, utils
+import argparse
+import warnings
+warnings.filterwarnings("ignore")
+import scipy
+from bufferedpatchdataset import BufferedPatchDataset
+from PIL import Image
 
-import pdb
+def normalize(img):
+    """Subtract mean, set STD to 1.0"""
+    result = img.astype(np.float64)
+    result -= np.mean(result)
+    result /= np.std(result)
+    return result
 
-class TiffDataset(FnetDataset):
-    """Dataset for Tif files."""
+class Resizer(object):
+    def __init__(self, factors):
+        """
+        factors - tuple of resizing factors for each dimension of the input array"""
+        self.factors = factors
 
-    def __init__(self, dataframe: pd.DataFrame = None, path_csv: str = None, 
-                    transform_source = [transforms.normalize],
-                    transform_target = None):
-        
-        if dataframe is not None:
-            self.df = dataframe
-        else:
-            self.df = pd.read_csv(path_csv)
-        assert all(i in self.df.columns for i in ['path_signal', 'path_target'])
-        
-        self.transform_source = transform_source
-        self.transform_target = transform_target
+    def __call__(self, x):
+        return scipy.ndimage.zoom(x, (self.factors), mode='nearest')
 
+    def __repr__(self):
+        return 'Resizer({:s})'.format(str(self.factors))
+
+
+# class for dataset
+class TIFdataset(Dataset):
+    def __init__(self, csvFile, transform=None):
+        self.ds = pd.read_csv(csvFile)        
+        self.transform = transform 
+        assert all(i in self.ds.columns for i in ['path_tif_signal', 'path_tif_target']) 
+    
+    def __len__(self):
+        return len(self.ds)
+    
     def __getitem__(self, index):
-        element = self.df.iloc[index, :]
-
-        im_out = [TifReader(element['path_signal']).get_image()]
-        if isinstance(element['path_target'], str):
-            im_out.append(TifReader(element['path_target']).get_image())
+        element = self.ds.iloc[index, :]
         
-        if self.transform_source is not None:
-            for t in self.transform_source: 
-                im_out[0] = t(im_out[0])
+        signalFile = element['path_tif_signal'] + '.tif'
+        targetFile = element['path_tif_target'] + '.tif'
 
-        if self.transform_target is not None and (len(im_out) > 1):
-            for t in self.transform_target: 
-                im_out[1] = t(im_out[1])
+        signal = io.imread(signalFile)[:508, :397]
+        target = io.imread(targetFile)[:508, :397]
+                        
+        im_out = list()
+        im_out.append(signal)
+        im_out.append(target)
 
-
+        print(signal.shape)
         
-        im_out = [torch.from_numpy(im).float() for im in im_out]
+        if self.transform is not None:
+            for t in self.transform: 
+                im_out[0] = eval(t)(im_out[0])
+
+        im_out = [torch.from_numpy(im.astype(float)).float() for im in im_out]
         
         #unsqueeze to make the first dimension be the channel dimension
         im_out = [torch.unsqueeze(im, 0) for im in im_out]
-        
-        return im_out
-    
-    def __len__(self):
-        return len(self.df)
-
-    def get_information(self, index):
-        return self.df.iloc[index, :].to_dict()
+        return im_out        
