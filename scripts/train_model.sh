@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-DATASET=${1:-dna}
+DATASET=${1:-nikon}
 N_ITER=50000
 BUFFER_SIZE=30
 BATCH_SIZE=24
@@ -11,7 +11,7 @@ GPU_IDS=${2:-0}
 
 cd $(cd "$(dirname ${BASH_SOURCE})" && pwd)/..
 
-python scripts/python/split_dataset.py ${PATH_DATASET_ALL_CSV} "/scratch/jagadish/pytorch_fnet/data/csvs" --train_size 0.75 -v
+#python scripts/python/split_dataset.py ${PATH_DATASET_ALL_CSV} "/scratch/jagadish/pytorch_fnet/data/csvs" --train_size 0.75 -v
 python train_model.py \
        --n_iter ${N_ITER} \
        --path_dataset_csv ${PATH_DATASET_TRAIN_CSV} \

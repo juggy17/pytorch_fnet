@@ -4,7 +4,7 @@ import importlib
 import pdb
 
 # manual override since it was detecting non-NVIDIA GPUs and failing on the CUDA libraries
-useGPU = False
+useGPU = True
 
 class Model(object):
     def __init__(
