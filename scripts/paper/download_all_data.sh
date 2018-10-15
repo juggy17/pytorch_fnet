@@ -2,6 +2,6 @@ declare -a arr=("beta_actin" "myosin_iib" "membrane_caax_63x" "desmoplakin" "sec
 
 for i in "${arr[@]}"
 do
-   curl -O http://downloads.allencell.org/publication-data/label-free-prediction/$i.tar.gz
+   #curl -O http://downloads.allencell.org/publication-data/label-free-prediction/$i.tar.gz
    tar -C ./data -xvzf ./$i.tar.gz
 done

@@ -27,7 +27,6 @@ class Model(object):
             self.device = torch.device('cuda', self.gpu_ids[0]) if self.gpu_ids[0] >= 0 else torch.device('cpu')
         else:
             self.device = torch.device('cpu')
-        
         self.criterion = criterion_fn()
         self._init_model(nn_kwargs=self.nn_kwargs)
 

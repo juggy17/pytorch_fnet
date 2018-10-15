@@ -3,7 +3,7 @@
 BUFFER_SIZE=1
 N_ITER=8
 RUN_DIR=saved_models/TEST
-PATH_DATASET_CSV=data/csvs/test_run.csv
+PATH_DATASET_CSV=/scratch/jagadish/pytorch_fnet/data/csvs/test_run.csv
 GPU_IDS=${1:-0}
 
 cd $(cd "$(dirname ${BASH_SOURCE})" && pwd)/..
