@@ -11,7 +11,7 @@ import argparse
 import warnings
 warnings.filterwarnings("ignore")
 import scipy
-from bufferedpatchdataset import BufferedPatchDataset
+from .bufferedpatchdataset import BufferedPatchDataset
 from PIL import Image
 
 def normalize(img):
