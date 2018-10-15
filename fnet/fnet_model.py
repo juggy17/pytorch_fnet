@@ -3,6 +3,9 @@ import torch
 import importlib
 import pdb
 
+# manual override since it was detecting non-NVIDIA GPUs and failing on the CUDA libraries
+useGPU = False
+
 class Model(object):
     def __init__(
             self,
@@ -20,8 +23,10 @@ class Model(object):
         self.criterion_fn = criterion_fn
         self.count_iter = 0
         self.gpu_ids = [gpu_ids] if isinstance(gpu_ids, int) else gpu_ids
-        # manual override since it was detecting non-NVIDIA GPUs
-        self.device = torch.device('cpu')#torch.device('cuda', self.gpu_ids[0]) if self.gpu_ids[0] >= 0 else torch.device('cpu')
+        if useGPU:
+            self.device = torch.device('cuda', self.gpu_ids[0]) if self.gpu_ids[0] >= 0 else torch.device('cpu')
+        else:
+            self.device = torch.device('cpu')
         
         self.criterion = criterion_fn()
         self._init_model(nn_kwargs=self.nn_kwargs)
@@ -57,11 +62,14 @@ class Model(object):
         if isinstance(gpu_ids, int):
             gpu_ids = [gpu_ids]
         self.gpu_ids = gpu_ids
-        # manual override since it was detecting non-NVIDIA GPUs
-        self.device = torch.device('cpu')# torch.device('cuda', self.gpu_ids[0]) if self.gpu_ids[0] >= 0 else torch.device('cpu')
+        if useGPU:
+            self.device = torch.device('cuda', self.gpu_ids[0]) if self.gpu_ids[0] >= 0 else torch.device('cpu')
+        else:
+            self.device = torch.device('cpu')
         self.net.to(self.device)
-        # manual override since it was detecting non-NVIDIA GPUs
-        # _set_gpu_recursive(self.optimizer.state, self.gpu_ids[0])  # this may not work in the future
+        
+        if useGPU:
+            _set_gpu_recursive(self.optimizer.state, self.gpu_ids[0])  # this may not work in the future
 
     def save_state(self, path_save):
         curr_gpu_ids = self.gpu_ids
@@ -132,13 +140,11 @@ def _set_gpu_recursive(var, gpu_id):
     var - (dict) keys are either Tensors or dicts
     gpu_id - (int) GPU onto which to move the Tensors
     """
-    for key in var:
-        var[key] = var[key].cpu()
-        # manual override since it was detecting non-NVIDIA GPUs
-        # if isinstance(var[key], dict):
-        #     _set_gpu_recursive(var[key], gpu_id)
-        # elif torch.is_tensor(var[key]):
-        #     if gpu_id == -1:
-        #         var[key] = var[key].cpu()
-        #     else:
-        #         var[key] = var[key].cuda(gpu_id)
+    for key in var:        
+        if isinstance(var[key], dict):
+            _set_gpu_recursive(var[key], gpu_id)
+        elif torch.is_tensor(var[key]):
+            if gpu_id == -1:
+                var[key] = var[key].cpu()
+            else:
+                var[key] = var[key].cuda(gpu_id)
