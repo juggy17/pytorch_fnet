@@ -71,7 +71,7 @@ class TIFdataset(Dataset):
             for t in self.transform_source: 
                 im_out[0] = t(im_out[0])
 
-        if has_target and self.transform_target is not None:
+        if self.transform_target is not None:
             for t in self.transform_target: 
                 im_out[1] = t(im_out[1])
 
