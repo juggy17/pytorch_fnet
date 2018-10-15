@@ -57,8 +57,8 @@ class TIFdataset(Dataset):
     def __getitem__(self, index):
         element = self.ds.iloc[index, :]
         
-        signalFile = element['path_tif_signal'] + '.tif'
-        targetFile = element['path_tif_target'] + '.tif'
+        signalFile = element['path_tif_signal']
+        targetFile = element['path_tif_target']
 
         signal = io.imread(signalFile)[:508, :397]
         target = io.imread(targetFile)[:508, :397]
