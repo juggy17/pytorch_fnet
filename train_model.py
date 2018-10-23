@@ -40,6 +40,7 @@ def get_dataloader(remaining_iterations, opts, validation=False):
         ds_patch,
         batch_size = opts.batch_size,
     )
+    print(len(dataloader))
     return dataloader
 
 def main():
@@ -58,7 +59,7 @@ def main():
     parser.add_argument('--n_iter', type=int, default=500, help='number of training iterations')
     parser.add_argument('--nn_kwargs', type=json.loads, default={}, help='kwargs to be passed to nn ctor')
     parser.add_argument('--nn_module', default='fnet_nn_3d', help='name of neural network module')
-    parser.add_argument('--patch_size', nargs='+', type=int, default=[32, 64, 64], help='size of patches to sample from Dataset elements')
+    parser.add_argument('--patch_size', nargs='+', type=int, default=[64, 128, 128], help='size of patches to sample from Dataset elements')
     parser.add_argument('--path_dataset_csv', type=str, help='path to csv for constructing Dataset')
     parser.add_argument('--path_dataset_val_csv', type=str, help='path to csv for constructing validation Dataset (evaluated everytime the model is saved)')
     parser.add_argument('--path_run_dir', default='saved_models', help='base directory for saved models')

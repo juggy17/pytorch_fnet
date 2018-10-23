@@ -60,8 +60,8 @@ class TIFdataset(Dataset):
         signalFile = element['path_tif_signal']
         targetFile = element['path_tif_target']
 
-        signal = io.imread(signalFile)[:508, :397]
-        target = io.imread(targetFile)[:508, :397]
+        signal = io.imread(signalFile)
+        target = io.imread(targetFile)
                         
         im_out = list()        
         im_out.append(signal)

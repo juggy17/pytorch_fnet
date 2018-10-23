@@ -22,7 +22,8 @@ class Model(object):
         self.lr = lr
         self.criterion_fn = criterion_fn
         self.count_iter = 0
-        self.gpu_ids = [gpu_ids] if isinstance(gpu_ids, int) else gpu_ids
+        print(torch.cuda.device_count())
+        self.gpu_ids = [0]#[gpu_ids] if isinstance(gpu_ids, int) else gpu_ids
         if useGPU:
             self.device = torch.device('cuda', self.gpu_ids[0]) if self.gpu_ids[0] >= 0 else torch.device('cpu')
         else:
