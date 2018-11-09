@@ -59,10 +59,10 @@ def main():
     factor_yx = 0.37241  # 0.108 um/px -> 0.29 um/px
     default_resizer_str = 'fnet.transforms.Resizer((1, {:f}, {:f}))'.format(factor_yx, factor_yx)
     parser = argparse.ArgumentParser()
-    parser.add_argument('--class_dataset', default='CziDataset', help='Dataset class')
+    parser.add_argument('--class_dataset', default='TIFdataset', help='Dataset class')
     parser.add_argument('--gpu_ids', type=int, default=0, help='GPU ID')
     parser.add_argument('--module_fnet_model', default='fnet_model', help='module with fnet_model')
-    parser.add_argument('--n_images', type=int, default=16, help='max number of images to test')
+    parser.add_argument('--n_images', type=int, default=20, help='max number of images to test')
     parser.add_argument('--no_prediction', action='store_true', help='set to not save prediction image')
     parser.add_argument('--no_prediction_unpropped', action='store_true', help='set to not save unpropped prediction image')
     parser.add_argument('--no_signal', action='store_true', help='set to not save signal image')
