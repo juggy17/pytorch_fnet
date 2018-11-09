@@ -82,3 +82,7 @@ class TIFdataset(Dataset):
         #unsqueeze to make the first dimension be the channel dimension
         im_out = [torch.unsqueeze(im, 0) for im in im_out]
         return im_out        
+    
+    def get_information(self, index: int) -> dict:
+        return self.df.iloc[index, :].to_dict()
+    
