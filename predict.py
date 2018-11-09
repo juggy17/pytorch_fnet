@@ -1,6 +1,11 @@
 import argparse
-import fnet
-import fnet.data
+import sys
+import os
+sys.path
+sys.path.insert(0, os.getcwd() + '/../')
+import pytorch_fnet
+import pytorch_fnet.fnet as fnet
+import pytorch_fnet.fnet.data
 import importlib
 import json
 import numpy as np
