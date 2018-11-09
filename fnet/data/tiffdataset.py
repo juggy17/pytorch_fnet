@@ -84,5 +84,5 @@ class TIFdataset(Dataset):
         return im_out        
     
     def get_information(self, index: int) -> dict:
-        return self.df.iloc[index, :].to_dict()
+        return self.ds.iloc[index, :].to_dict()
     
