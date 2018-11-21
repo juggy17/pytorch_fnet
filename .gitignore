@@ -17,3 +17,6 @@ tmp/
 *czi
 .DS_Store
 *#
+saved_models*/
+.dockerignore
+.vscode
