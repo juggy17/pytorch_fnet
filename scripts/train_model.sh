@@ -2,9 +2,9 @@
 
 DATASET=${1:-nikon}
 N_ITER=20000
-BUFFER_SIZE=1
-BATCH_SIZE=4
-RUN_DIR="saved_models4/${DATASET}"
+BUFFER_SIZE=30
+BATCH_SIZE=24
+RUN_DIR="saved_models5/${DATASET}"
 PATH_DATASET_ALL_CSV="/scratch/jagadish/pytorch_fnet/data/csvs/${DATASET}.csv"
 PATH_DATASET_TRAIN_CSV="/scratch/jagadish/pytorch_fnet/data/csvs/${DATASET}/train.csv"
 GPU_IDS=${2:-0}
