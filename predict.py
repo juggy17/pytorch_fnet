@@ -96,7 +96,7 @@ def main():
         data = [torch.unsqueeze(d, 0) for d in dataset[idx]]  # make batch of size 1
         signal = data[0]
         target = data[1] if (len(data) > 1) else None
-        print(signa.shape)
+        print(signal.shape)
         path_tiff_dir = os.path.join(opts.path_save_dir, '{:02d}'.format(idx))
         if not opts.no_signal:
             save_tiff_and_log('signal', signal.numpy()[0, ], path_tiff_dir, entry, opts.path_save_dir)
